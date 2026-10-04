@@ -1,0 +1,7 @@
+tunnel: ppcf         # or the UUID
+credentials-file: /absolute/path/to/.cloudflared/649a11e7-2f4a-470c-bbf1-e00fc74ad11f.json
+
+ingress:
+  - hostname: michiosawa.dev          # or app.yourdomain.com
+    service: http://localhost:3000
+  - service: http_status:404
