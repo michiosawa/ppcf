@@ -9,15 +9,35 @@
 #   end
 
 User.destroy_all
-User.create!(
-  #  username: "admin",
+user = User.create!(
+  username: "admin",
   email: "test@home",
-  password: "password",
-  password_confirmation: "password",
-
+  password: "1321522",
+  password_confirmation: "1321522",
 )
 
-puts "✅ Admin user created successfully!"
-# puts "   Username: admin"
-puts "   Email: test@home"
-puts "   Password: password"
+Company.destroy_all
+company = Company.create!(
+  name: "個人",
+  owner: "個人",
+)
+
+search = Company.where(name:"個人").pluck(:id)
+kaisha = Company.find_by(id: search)
+
+Worker.destroy_all
+worker = Worker.create!(
+  name: "michio",
+  company: kaisha,
+)
+
+Workplace.destroy_all
+workplace = Workplace.create!(
+  title: "本社",
+  address: "横浜市鶴見区鶴見中央2-14-22"
+)
+
+puts User.find_by(username: "admin").username
+puts Company.find_by(name: "個人").name
+puts Worker.find_by(name: "michio").name
+puts Workplace.find_by(title: "本社").title

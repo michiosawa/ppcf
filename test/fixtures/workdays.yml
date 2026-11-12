@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  worker: one
+  workplace: one
+  checkin: 2026-10-12 19:02:40
+  checkout: 2026-10-12 19:02:40
+  healthcheck: 
+  overtime: 9.99
+  comment: MyText
+
+two:
+  worker: two
+  workplace: two
+  checkin: 2026-10-12 19:02:40
+  checkout: 2026-10-12 19:02:40
+  healthcheck: 
+  overtime: 9.99
+  comment: MyText

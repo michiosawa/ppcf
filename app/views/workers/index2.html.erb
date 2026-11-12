@@ -1,0 +1,53 @@
+<% content_for :title, "Workers" %>
+
+<div class="container mx-auto">
+  <nav class="relative bg-gray-300 border border-dark h-20">
+    <div class="flex items-center justify-between h-20 px-4">
+
+        <%= link_to "東邦電設", thmain_path, class: "text-5xl font-medium hover:text-white"  %>
+        <%= link_to Date.today, workdays_main_path, class: "text-5xl font-medium hover:text-white"  %>
+        <%= link_to "作業員", workers_main_path, class: "text-5xl font-medium hover:text-white"  %>
+        <%= link_to "会社", companies_main_path, class: "text-5xl font-medium hover:text-white"  %>
+        <%= link_to "作業場所", workplaces_main_path, class: "text-5xl font-medium hover:text-white"  %>
+        <%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
+
+    </div>
+  </nav>
+
+  <div class="container border border-dark mt-2">
+    <% @workers.each do |worker| %>
+        <div class="text-3xl p-1 mx-3">
+            <h1><%= link_to "#{worker.company} - #{worker.name}", worker_path(worker.id)  %></h1>
+        </div>
+    <% end %>
+  </div>
+
+  <div class="w-full">
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <% end %>
+
+    <div class="flex justify-between items-center">
+      <h1 class="font-bold text-4xl">Workers</h1>
+      <%= link_to "New worker", new_worker_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+    </div>
+
+    <div id="workers" class="min-w-full divide-y divide-gray-200 space-y-5">
+      <% if @workers.any? %>
+        <% @workers.each do |worker| %>
+          <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
+            <%= render worker %>
+            <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
+              <%= link_to "Show", worker, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+              <%= link_to "Edit", edit_worker_path(worker), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+              <%= button_to "Destroy", worker, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="text-center my-10">No workers found.</p>
+      <% end %>
+    </div>
+  </div>
+
+</div>

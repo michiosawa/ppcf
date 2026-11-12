@@ -1,0 +1,19 @@
+<% content_for :title, "New workday" %>
+
+<div class="container mx-auto">
+  <%= render "navbar" %>
+
+  <h1 class="font-bold text-4xl">New workday</h1>
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <% end %>
+    <%= form_with url: workdays_create_path(:access_token => @worker.access_token), method: :post, model: @workday do |f| %>
+      <div class="form-group m-1">
+          <%= f.label :date %>
+          <%= f.date_field :date, class: "form-control", :required => true %>
+      </div>
+      <%= f.submit "Create Workday", class: "text-3xl bg-blue-500 m-2 rounded" %>
+    <% end %>
+
+  <%= link_to "Back to worker", worker_path(@worker.access_token), class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+</div>

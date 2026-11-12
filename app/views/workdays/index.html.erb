@@ -1,0 +1,50 @@
+<% content_for :title, "Workdays" %>
+
+<div class="container mx-auto">
+  <%= render "navbar" %>
+
+  <div class="w-full">
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <% end %>
+
+    <div class="flex justify-between items-center">
+      <h1 class="font-bold text-4xl">Workdays</h1>
+    </div>
+
+    <div id="workdays" class="min-w-full divide-y divide-gray-200 space-y-5">
+      <% if @workday.any? %>
+        <div class="flex justify-center mt-5">
+          <% @grouped_workdays.each do |workplace, workdays| %>
+            <div class="w-full mb-4">
+              <h3>
+                <%= workplace || "No workplace" %>
+                <small class="text-muted">(<%= workdays.size %> workers)</small>
+              </h3>
+
+              <ul class="list-group">
+                <% workdays.each do |workday| %>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <%= workday.worker.name %>
+
+                    <!-- optional extra info -->
+                    <span class="badge bg-secondary">
+                      <%= workday.checkin.strftime('%H:%M') %> -
+                      <%= workday.checkout&.strftime('%H:%M') %>
+                    </span>
+                    <%= link_to "Edit", workday_edit_path(workday), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-blue-200 hover:bg-gray-50 inline-block font-medium" %>
+                    <%= button_to "Destroy", workday, method: :delete, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-red-500 hover:bg-gray-50 inline-block font-medium", data: { turbo_confirm: "Are you sure?" } %>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-center my-10">No workdays found.</p>
+      <% end %>
+    </div>
+
+  </div>
+
+</div>

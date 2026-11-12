@@ -1,0 +1,12 @@
+  <nav class="relative bg-gray-300 border border-dark h-20">
+    <div class="flex items-center justify-between h-20 px-4">
+
+        <%= link_to "東邦電設", thmain_path, class: "text-5xl font-medium hover:text-white"  %>
+        <%= link_to Date.current, workdays_main_path(id: Date.current), class: "text-5xl font-medium hover:text-white"  %>
+        <%= link_to "作業員", workers_main_path, class: "text-5xl font-medium hover:text-white"  %>
+        <%= link_to "会社", companies_main_path, class: "text-5xl font-medium hover:text-white"  %>
+        <%= link_to "作業場所", workplaces_main_path, class: "text-5xl font-medium hover:text-white"  %>
+        <%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
+
+    </div>
+  </nav>

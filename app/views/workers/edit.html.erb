@@ -1,0 +1,28 @@
+<% content_for :title, "Editing worker" %>
+
+<div class="container mx-auto">
+  <%= render "navbar" %>
+
+  <div class="container border border-dark">
+
+    <div class="m-1 p-3">
+        <%= form_with url: update_worker_path(@worker.access_token), model: @worker, method: :patch do |f| %>
+            <%= f.label :company, "班名" %>
+            <%= f.collection_select :company_id,
+                                    @companies,
+                                    :id,
+                                    :name,
+                                    { prompt: "select a company" },
+                                    { class: "form-select bg-gray-200" }
+            %> |
+            <%= f.label :name, "氏名" %>
+            <%= f.text_field :name, class: "bg-gray-200" %> |
+            <%= f.submit "更新", class: "bg-blue-200 rounded" %>
+        <% end %>
+        <%= link_to "delete", destroy_worker_path(@worker), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "bg-red-300 rounded" %> <br>
+    </div>
+
+  </div>
+   <%= link_to "Back to workers", workers_main_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  </div>
+</div>

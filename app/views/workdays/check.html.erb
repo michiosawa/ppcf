@@ -1,0 +1,138 @@
+<div class="container mx-auto">
+
+  <div class="border border-dark mt-2">
+    <div class="text-center text-3xl p-1 mx-3">
+        <%= p Company.find_by(id: @worker.company_id)&.name %> - <%= @worker.name %>
+    </div>
+    <div class="container pt-3">
+        <% if @workday %>
+            <% if @workday.checkout %>
+                <div class="text-center text-7xl">
+                    お疲れ様です
+                </div>
+            <% else %>
+                <div class="w-[50vw] mx-auto">
+                    <%= form_with model: @workday, url: checkout_path, method: :patch do |f| %>
+                        <div class="border border-dark text-center">
+                            <p class="text-3xl"> 退出 </p>
+                                <div class="m-2 p-1 border boreder-dark">
+
+                                        <%= f.label :ck1, "水分・塩分補給を行いましたか？" %>
+
+
+                                        <%= f.check_box :ck1, {checked: true} %>
+
+                                </div>
+                            <div class="m-2 p-1 border boreder-dark">
+
+                                    <%= f.label :ck2, "昼食を食べましたか？" %>
+
+                                    <%= f.check_box :ck2, {checked: true} %>
+
+                            </div>
+                            <div class="m-2 p-1 border boreder-dark">
+
+                                    <%= f.label :ck3, "吐気・めまい等はありませんか？" %>
+
+                                    <%= f.check_box :ck3, {checked: true} %>
+
+                            </div>
+                            <div class="m-2 p-1 border boreder-dark">
+
+                                    <%= f.label :ck4, "手や足にシビレはありませんか？" %>
+
+                                    <%= f.check_box :ck4, {checked: true} %>
+
+                            </div>
+                            <div class="m-2 p-1 border boreder-dark">
+                                <%= f.label :temp, "体温を測定し記入してください。" %>
+                                <%= f.number_field :temp, step: 0.1, value: @last_healthcheck["temp2"] %>
+                            </div>
+                            <div class="m-2 p-1 border boreder-dark">
+                                血圧
+                                <%= f.label :maxp, "max" %>
+                                <%= f.number_field :maxp, value: @last_healthcheck["pressure2"][0] %>
+                                <%= f.label :maxp, "min" %>
+                                <%= f.number_field :minp, value: @last_healthcheck["pressure2"][1] %>
+                            </div>
+
+                            <%= f.submit "End", class: "m-2 rounded-full justify-content-center align-items-center w-32 h-32 bg-red-500" %>
+                        </div>
+                    <% end %>
+                </div>
+
+        <% end %>
+
+        <% else %>
+            <div class="w-[50vw] mx-auto">
+                <% @workday = Workday.new %>
+                <%= form_with url: checkin_path, model: @workday, method: :post do |f| %>
+                    <div class="border border-dark text-center">
+                        <p class="text-3xl"> 出勤 </p>
+                        <div class="m-2 p-1 border boreder-dark">
+                            <%= f.label :workplace_id, "現場" %>
+                            <%= f.collection_select( :workplace_id, @workplace, :id, :title, { selected: @last_workplace&.title, include_blank: false }, { class: "form-select" } ) %>
+                        </div>
+                        <div class="m-2 p-1 border boreder-dark">
+
+                                <%= f.label :alcohol, "アルコール" %> -
+
+
+                                <%= f.number_field :alcohol, step: 0.01, value: 0 %>
+
+                        </div>
+                        <div class="m-2 p-1 border boreder-dark">
+
+                                <%= f.label :ck1, "良く眠りましたか？" %>
+
+
+                                <%= f.check_box :ck1, {checked: true} %>
+
+                        </div>
+                        <div class="m-2 p-1 border boreder-dark">
+
+                                <%= f.label :ck2, "朝食を食べましたか？" %>
+
+
+                                <%= f.check_box :ck2, {checked: true} %>
+
+                        </div>
+                        <div class="m-2 p-1 border boreder-dark">
+
+                                <%= f.label :ck3, "体調は悪くありませんか？" %>
+
+
+                                <%= f.check_box :ck3, {checked: true} %>
+
+                        </div>
+                        <div class="m-2 p-1 border boreder-dark">
+
+                                <%= f.label :ck4, "二日酔いではありませんか？" %>
+
+
+                                <%= f.check_box :ck4, {checked: true} %>
+
+                        </div>
+                        <div class="m-2 p-1 border boreder-dark">
+                            <%= f.label :temp, "体温を測定し記入してください。" %>
+                            <%= f.number_field :temp, step: 0.1, value: @last_healthcheck["temp1"] %>
+                        </div>
+                        <div class="m-2 p-1 border boreder-dark">
+                            血圧
+                            <%= f.label :maxp, "max" %>
+                            <%= f.number_field :maxp, value: @last_healthcheck["pressure1"][0] %>
+                            <%= f.label :maxp, "min" %>
+                            <%= f.number_field :minp, value: @last_healthcheck["pressure1"][1] %>
+                        </div>
+
+                            <%= f.submit "Start", class: "m-2 rounded-full justify-content-center align-items-center w-32 h-32 bg-green-500" %>
+
+                    </div>
+                <% end %>
+            </div>
+        <% end %>
+    </div>
+
+
+  </div>
+</div>

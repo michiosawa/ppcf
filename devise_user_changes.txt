@@ -1,0 +1,76 @@
+rails g migration AddFieldsToUsers username:string:uniq contact:string address:text
+
+# db/migrate/xxxx_add_fields_to_users.rb
+class AddFieldsToUsers < ActiveRecord::Migration[7.1] # or your version
+  def change
+    add_column :users, :username, :string
+    add_column :users, :contact, :string
+    add_column :users, :address, :text
+
+    add_index :users, :username, unique: true
+  end
+end
+
+# app/models/user.rb
+class User < ApplicationRecord
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
+  validates :username, presence: true, uniqueness: { case_sensitive: false }
+  validates :contact, presence: true   # optional – remove if not required
+  # address is optional
+
+  # Allow login with username instead of email
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login)
+      where(conditions.to_h)
+        .where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }])
+        .first
+    elsif conditions.has_key?(:username) || conditions.has_key?(:email)
+      where(conditions.to_h).first
+    end
+  end
+end
+
+# app/controllers/application_controller.rb
+class ApplicationController < ActionController::Base
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:username, :contact, :address])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:username, :contact, :address])
+  end
+end
+
+In config/initializers/devise.rb:ruby
+
+config.authentication_keys = [:login]
+config.case_insensitive_keys = [:login]
+config.strip_whitespace_keys = [:login]
+
+# app/models/user.rb (add this)
+attr_accessor :login
+
+def login
+  @login || self.username || self.email
+end
+
+Update the sign-in form (app/views/devise/sessions/new.html.erb):erb
+
+<div class="field">
+  <%= f.label :login, "Username or Email" %><br />
+  <%= f.text_field :login, autofocus: true, autocomplete: "username" %>
+</div>
+
+
+app/controllers
+  before_action :authenticate_user!
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
+
+1. db:drop:_unsafe: Kills any lingering connections and completely deletes the old database.
+2. db:create: Establishes a 100% blank database.
+3. db:migrate: Runs your migration files chronologically from scratch.

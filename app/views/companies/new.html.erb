@@ -1,0 +1,28 @@
+<% content_for :title, "New company" %>
+
+<div class="container mx-auto">
+  <%= render "navbar" %>
+
+  <div class="md:w-2/3 w-full">
+    <h1 class="font-bold text-4xl">New company</h1>
+
+    <div class="card m-1 p-3">
+        <%= form_with url: create_company_path, model: @company, method: :post do |f| %>
+            <div class="card m-1 p-3">
+            <%= f.label :name, "会社名" %>
+            <%= f.text_field :name, :required => true, class: "bg-gray-200" %>
+            </div>
+            <div class="card m-1 p-3">
+            <%= f.label :tel, "Tel" %>
+            <%= f.text_field :tel, class: "bg-gray-200" %>
+            </div>
+            <div class="card m-1 p-3">
+            <%= f.label :address, "address" %>
+            <%= f.text_field :address, class: "bg-gray-200" %>
+            <%= f.submit "作成", class: "bg-blue-500 rounded" %>
+            </div>
+        <% end %>
+    </div>
+
+    <%= link_to "Back to companies", companies_main_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+</div>

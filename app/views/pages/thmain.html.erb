@@ -1,0 +1,17 @@
+<div class="container mx-auto">
+  <%= render "navbar" %>
+
+    <div class="grid grid-cols-7 gap-2 text-center text-3xl mb-2 mt-3">
+        <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+    </div>
+
+    <div class="grid grid-cols-7 gap-2 " id="calendar-grid">
+        <% @weeks["weeks"].each do |m| %>
+            <% m.each do |d| %>
+                <%= link_to  workdays_main_path(id: Date.parse(d)), class: "h-30 date-cell text-center rounded-full hover:bg-blue-100 " do %>
+                    <span class="text-2xl text-gray-500"><%= d %> </span>
+                <% end %>
+            <% end %>
+        <% end %>
+    </div>
+</div>

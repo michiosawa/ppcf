@@ -1,0 +1,23 @@
+<% content_for :title, "Editing workday" %>
+
+<div class="container mx-auto">
+  <%= render "navbar" %>
+
+  <div class="md:w-2/3 w-full">
+    <h1 class="font-bold text-4xl">Editing workday</h1>
+
+    <div class="container border border-dark">
+        <div class="card m-1 p-3">
+            <%= form_with model: @workday, url: workday_update_path(@workday), method: :patch do |f| %>
+                <%= f.label :checkin, "Start Time" %>
+                <%= f.text_field :checkin, value: @start %>
+                <%= f.label :checkout, "End Time" %>
+                <%= f.text_field :checkout, value: @end %>
+                <%= f.label :overtime, "Overtime" %>
+                <%= f.number_field :overtime, value: @overtime %>
+                <%= f.submit "更新" %>
+            <% end %>
+        </div>
+    </div>
+  </div>
+</div>

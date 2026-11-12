@@ -1,0 +1,31 @@
+<% content_for :title, "New worker" %>
+
+<div class="container mx-auto">
+  <%= render "navbar" %>
+
+  <div class="md:w-2/3 w-full">
+    <h1 class="font-bold text-4xl">New worker</h1>
+
+    <div class="mt-2  border border-dark">
+
+        <div class="card m-1 p-3">
+            <%= form_with url: create_worker_path, model: @worker, method: :post do |f| %>
+                <%= f.label :company_id, "班名" %>
+                <%= f.collection_select :company_id,
+                                        @companies,
+                                        :id,
+                                        :name,
+                                        { prompt: "select a company" },
+                                        { class: "form-select bg-gray-200" }
+                %>
+                <%= f.label :name, "氏名" %>
+                <%= f.text_field :name, :required => true, class: "bg-gray-200" %>
+                <%= f.submit "作成", class: "bg-blue-500 rounded" %>
+            <% end %>
+        </div>
+
+    </div>
+
+    <%= link_to "Back to workers", workers_main_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+  </div>
+</div>

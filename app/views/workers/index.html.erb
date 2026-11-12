@@ -1,0 +1,26 @@
+<% content_for :title, "Workers" %>
+
+<div class="container mx-auto">
+  <%= render "navbar" %>
+
+  <div class="relative bg-gray-300 border border-dark mt-2">
+    <div> <%= link_to "new worker", new_worker_path, class: "text-5xl font-medium hover:text-white" %> </div>
+  </div>
+  <div class="container border border-dark mt-2">
+
+    <% @workers.each do |worker| %>
+        <div class="text-3xl p-1 mx-3">
+            <h1><%= link_to "#{Company.find_by(id: worker.company_id)&.name} - #{worker.name}", worker_path(worker.access_token)  %></h1>
+        </div>
+        <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
+          <%= link_to "edit", edit_worker_path(worker.access_token), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+          <%= link_to "destroy", worker_path(worker.access_token), method: :delete, data: { confirm: "Are you sure?" }, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+        </div>
+    <% end %>
+  </div>
+
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
+    <% end %>
+
+</div>
