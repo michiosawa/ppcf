@@ -25,15 +25,14 @@
               <ul class="list-group">
                 <% workdays.each do |workday| %>
                   <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <%= workday.worker.name %>
+                    <%= link_to workday_path(workday.id), class: "block-link" do %>
+                      <div class="card-body text-sm lg:text-lg">
+                        <%= workday.worker.name %>
 
-                    <!-- optional extra info -->
-                    <span class="badge bg-secondary">
-                      <%= workday.checkin.strftime('%H:%M') %> -
-                      <%= workday.checkout&.strftime('%H:%M') %>
-                    </span>
-                    <%= link_to "Edit", workday_edit_path(workday), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-blue-200 hover:bg-gray-50 inline-block font-medium" %>
-                    <%= button_to "Destroy", workday, method: :delete, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-red-500 hover:bg-gray-50 inline-block font-medium", data: { turbo_confirm: "Are you sure?" } %>
+                        <%= workday.checkin.strftime('%H:%M') %> -
+                        <%= workday.checkout&.strftime('%H:%M') %>
+                      </div>
+                    <% end %>
                   </li>
                 <% end %>
               </ul>

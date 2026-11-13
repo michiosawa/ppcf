@@ -8,8 +8,8 @@
     <div class="grid grid-cols-7 gap-2 " id="calendar-grid">
         <% @weeks["weeks"].each do |m| %>
             <% m.each do |d| %>
-                <%= link_to  workdays_main_path(id: Date.parse(d)), class: "h-30 date-cell text-center rounded-full hover:bg-blue-100 " do %>
-                    <span class="text-2xl text-gray-500"><%= d %> </span>
+                <%= link_to  workdays_main_path(id: Date.parse(d)), class: "h-16 lg:h-30 date-cell text-center rounded-full hover:bg-blue-100 " do %>
+                    <span class="text-sm lg:text-lg text-gray-500"><%= d %> </span>
                 <% end %>
             <% end %>
         <% end %>

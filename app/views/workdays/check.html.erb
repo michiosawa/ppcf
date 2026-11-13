@@ -11,7 +11,7 @@
                     お疲れ様です
                 </div>
             <% else %>
-                <div class="w-[50vw] mx-auto">
+                <div class="w-full lg:w-1/2 mx-auto">
                     <%= form_with model: @workday, url: checkout_path, method: :patch do |f| %>
                         <div class="border border-dark text-center">
                             <p class="text-3xl"> 退出 </p>
@@ -50,10 +50,14 @@
                             </div>
                             <div class="m-2 p-1 border boreder-dark">
                                 血圧
-                                <%= f.label :maxp, "max" %>
-                                <%= f.number_field :maxp, value: @last_healthcheck[:pressure2][0] %>
-                                <%= f.label :maxp, "min" %>
-                                <%= f.number_field :minp, value: @last_healthcheck[:pressure2][1] %>
+                            <h3>
+                            <%= f.label :maxp, "max" %>
+                            <%= f.number_field :maxp, value: @last_healthcheck[:pressure2][0] %>
+                            </h3>
+                            <h3>
+                            <%= f.label :maxp, "min" %>
+                            <%= f.number_field :minp, value: @last_healthcheck[:pressure2][1] %>
+                            </h3>
                             </div>
 
                             <%= f.submit "End", class: "m-2 rounded-full justify-content-center align-items-center w-32 h-32 bg-red-500" %>
@@ -64,7 +68,7 @@
         <% end %>
 
         <% else %>
-            <div class="w-[50vw] mx-auto">
+            <div class="w-full lg:w-1/2 mx-auto">
                 <% @workday = Workday.new %>
                 <%= form_with url: checkin_path, model: @workday, method: :post do |f| %>
                     <div class="border border-dark text-center">
@@ -119,10 +123,14 @@
                         </div>
                         <div class="m-2 p-1 border boreder-dark">
                             血圧
+                            <h3>
                             <%= f.label :maxp, "max" %>
                             <%= f.number_field :maxp, value: @last_healthcheck[:pressure1][0] %>
+                            </h3>
+                            <h3>
                             <%= f.label :maxp, "min" %>
                             <%= f.number_field :minp, value: @last_healthcheck[:pressure1][1] %>
+                            </h3>
                         </div>
 
                             <%= f.submit "Start", class: "m-2 rounded-full justify-content-center align-items-center w-32 h-32 bg-green-500" %>
