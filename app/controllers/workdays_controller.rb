@@ -57,17 +57,21 @@ class WorkdaysController < ApplicationController
     @worker = Worker.find_by(access_token: params[:access_token])
     @workday = Workday.find_by(worker_id: @worker.id, checkin: Date.today.all_day)
     @workplace = Workplace.all
-    @last_workday = Workday.where(worker_id: @worker.id).order(checkin: :desc).first
+    @last_workday = Workday.find_by(id: @worker.last)
     @last_workplace = @last_workday ? @last_workday.workplace : Workplace.all.first
-    @last_healthcheck = @last_workday.healthcheck ? @last_workday.healthcheck : { "pressure1": [ 0, 0 ], "pressure2": [ 0, 0 ], "temp1": 0, "temp2": 0 }
+    @last_healthcheck = { pressure1: [ 0, 0 ], pressure2: [ 0, 0 ], temp1: 0, temp2: 0 }
+    if @last_workday
+      @last_healthcheck = @last_workday.healthcheck
+    end
   end
 
   def checkin
     time = Time.current
     @worker = Worker.find_by(access_token: params[:access_token])
     @workday = Workday.find_by(worker_id: @worker.id, checkin: Date.current.all_day)
-    @last_workday = Workday.find_by(id: @worker.last)
-    @last_healthcheck = @last_workday ? @last_workday.healthcheck : { "pressure1": [ 0, 0 ], "pressure2": [ 0, 0 ], "temp1": 0, "temp2": 0 }
+    if @last_workday
+      @last_healthcheck = @last_workday.healthcheck
+    end
     if @worker.nil?
       redirect_to workers_main_path, alert: "Worker not found."
     end
@@ -77,9 +81,9 @@ class WorkdaysController < ApplicationController
       workplace = workday_params[:workplace_id].present? ? Workplace.find_by(id: workday_params[:workplace_id]) : Workplace.all.first
       healthcheck = {
         pressure1: [ workday_params[:maxp], workday_params[:minp] ],
-        pressure2: [ 0, 0 ],
+
         temp1: workday_params[:temp],
-        temp2: 0,
+
         checkboxes: { check_1: workday_params[:ck1], check_2: workday_params[:ck2], check_3: workday_params[:ck3], check_4: workday_params[:ck4] },
         alcohol: workday_params[:alcohol]
         }
@@ -109,21 +113,21 @@ class WorkdaysController < ApplicationController
     else
       @workday.checkout = time
       checkboxes = { check_5: workday_params[:ck1], check_6: workday_params[:ck2], check_7: workday_params[:ck3], check_8: workday_params[:ck4] }
-        # healthcheck = {
-        #   pressure2: [ workday_params[:maxp], workday_params[:minp] ],
-        #   temp2: workday_params[:temp]
-        #   }
-        @workday.healthcheck["pressure2"] = [ workday_params[:maxp], workday_params[:minp] ]
-        @workday.healthcheck["temp2"] = workday_params[:temp]
-        @workday.healthcheck["checkboxes"].merge!(checkboxes)
-        @workday.overtime = workday_params[:overtime] if workday_params[:overtime].present?
-        if @workday.save
-          @worker.last = @workday.id
-          @worker.save
-          redirect_to workdays_main_path(id: Date.current), notice: "Check-out successful."
-        else
-          redirect_to workers_main_path(id: Date.current), alert: "Check-out failed."
-        end
+      healthcheck = {
+        pressure2: [ workday_params[:maxp], workday_params[:minp] ],
+        temp2: workday_params[:temp]
+      }
+      @workday.healthcheck["pressure2"] = [ workday_params[:maxp], workday_params[:minp] ]
+      @workday.healthcheck["temp2"] = workday_params[:temp]
+      @workday.healthcheck["checkboxes"].merge!(checkboxes)
+      @workday.overtime = workday_params[:overtime] if workday_params[:overtime].present?
+      if @workday.save
+        @worker.last = @workday.id
+        @worker.save
+        redirect_to checkin_path(@worker.access_token), notice: "Check-out successful."
+      else
+        redirect_to workers_main_path(id: Date.current), alert: "Check-out failed."
+      end
     end
   end
   # POST /workdays or /workdays.json

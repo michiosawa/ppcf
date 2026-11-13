@@ -46,14 +46,14 @@
                             </div>
                             <div class="m-2 p-1 border boreder-dark">
                                 <%= f.label :temp, "体温を測定し記入してください。" %>
-                                <%= f.number_field :temp, step: 0.1, value: @last_healthcheck["temp2"] %>
+                                <%= f.number_field :temp, step: 0.1, value: @last_healthcheck[:temp2] %>
                             </div>
                             <div class="m-2 p-1 border boreder-dark">
                                 血圧
                                 <%= f.label :maxp, "max" %>
-                                <%= f.number_field :maxp, value: @last_healthcheck["pressure2"][0] %>
+                                <%= f.number_field :maxp, value: @last_healthcheck[:pressure2][0] %>
                                 <%= f.label :maxp, "min" %>
-                                <%= f.number_field :minp, value: @last_healthcheck["pressure2"][1] %>
+                                <%= f.number_field :minp, value: @last_healthcheck[:pressure2][1] %>
                             </div>
 
                             <%= f.submit "End", class: "m-2 rounded-full justify-content-center align-items-center w-32 h-32 bg-red-500" %>
@@ -115,14 +115,14 @@
                         </div>
                         <div class="m-2 p-1 border boreder-dark">
                             <%= f.label :temp, "体温を測定し記入してください。" %>
-                            <%= f.number_field :temp, step: 0.1, value: @last_healthcheck["temp1"] %>
+                            <%= f.number_field :temp, step: 0.1, value: @last_healthcheck[:temp1] %>
                         </div>
                         <div class="m-2 p-1 border boreder-dark">
                             血圧
                             <%= f.label :maxp, "max" %>
-                            <%= f.number_field :maxp, value: @last_healthcheck["pressure1"][0] %>
+                            <%= f.number_field :maxp, value: @last_healthcheck[:pressure1][0] %>
                             <%= f.label :maxp, "min" %>
-                            <%= f.number_field :minp, value: @last_healthcheck["pressure1"][1] %>
+                            <%= f.number_field :minp, value: @last_healthcheck[:pressure1][1] %>
                         </div>
 
                             <%= f.submit "Start", class: "m-2 rounded-full justify-content-center align-items-center w-32 h-32 bg-green-500" %>
